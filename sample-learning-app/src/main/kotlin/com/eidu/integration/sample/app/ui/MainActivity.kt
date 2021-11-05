@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
         } catch (e: IllegalArgumentException) {
             Log.e("MainActivity", "onCreate: invalid launch intent: $intent", e)
             setResult(
-                RESULT_CANCELED,
+                RESULT_OK,
                 RunLearningUnitResult.ofError(
                     "unknown",
                     0L,
