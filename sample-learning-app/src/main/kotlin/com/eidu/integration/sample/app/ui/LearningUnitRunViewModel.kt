@@ -29,18 +29,16 @@ data class UnitResultData(
     fun toResult() = when (resultType) {
         RunLearningUnitResult.ResultType.Success ->
             RunLearningUnitResult.ofSuccess(
-                learningUnitId,
                 score,
                 foregroundTimeInMs,
                 additionalData
             )
 
         RunLearningUnitResult.ResultType.Abort ->
-            RunLearningUnitResult.ofAbort(learningUnitId, score, foregroundTimeInMs, additionalData)
+            RunLearningUnitResult.ofAbort(score, foregroundTimeInMs, additionalData)
 
         RunLearningUnitResult.ResultType.Error ->
             RunLearningUnitResult.ofError(
-                learningUnitId,
                 foregroundTimeInMs,
                 errorDetails,
                 additionalData
@@ -48,7 +46,6 @@ data class UnitResultData(
 
         RunLearningUnitResult.ResultType.TimeUp ->
             RunLearningUnitResult.ofTimeUp(
-                learningUnitId,
                 score,
                 foregroundTimeInMs,
                 additionalData
@@ -56,7 +53,6 @@ data class UnitResultData(
 
         RunLearningUnitResult.ResultType.TimeoutInactivity ->
             RunLearningUnitResult.ofTimeoutInactivity(
-                learningUnitId,
                 score,
                 foregroundTimeInMs,
                 additionalData

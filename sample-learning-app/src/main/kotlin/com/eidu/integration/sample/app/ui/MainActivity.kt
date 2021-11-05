@@ -58,7 +58,6 @@ class MainActivity : ComponentActivity() {
             setResult(
                 RESULT_OK,
                 RunLearningUnitResult.ofError(
-                    "unknown",
                     0L,
                     "Invalid Intent received: $intent",
                     null
