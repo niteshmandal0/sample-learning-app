@@ -26,6 +26,7 @@ import androidx.compose.material.RadioButton
 import androidx.compose.material.Slider
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,11 +45,11 @@ import java.text.DecimalFormat
 import java.util.Timer
 import java.util.TimerTask
 
+@OptIn(ExperimentalMaterialApi::class)
 class MainActivity : ComponentActivity() {
 
     private val viewModel: LearningUnitRunViewModel by viewModels()
 
-    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -73,146 +74,161 @@ class MainActivity : ComponentActivity() {
                 EiduScaffold(title = { Text("Run of ${viewModel.request.learningUnitId}") }) {
                     val scrollState = ScrollState(0)
                     Column(Modifier.verticalScroll(scrollState, true)) {
-                        Card(
-                            border = BorderStroke(1.dp, Color.LightGray),
-                            modifier = Modifier.padding(5.dp)
-                        ) {
-                            Column {
-                                var expanded by remember { mutableStateOf(false) }
-                                ListItem(
-                                    text = { Text("Request Data") }
-                                )
-                                Divider()
-                                if (expanded) {
-                                    ListItem(
-                                        text = { Text(viewModel.request.learningUnitId) },
-                                        secondaryText = { Text("Learning Unit ID") }
-                                    )
-                                    ListItem(
-                                        text = { Text(viewModel.request.learningUnitRunId) },
-                                        secondaryText = { Text("Learning Unit Run ID") }
-                                    )
-                                    ListItem(
-                                        text = { Text(viewModel.request.learnerId) },
-                                        secondaryText = { Text("Learner ID") }
-                                    )
-                                    ListItem(
-                                        text = { Text(viewModel.request.schoolId) },
-                                        secondaryText = { Text("School ID") }
-                                    )
-                                    ListItem(
-                                        text = { Text(viewModel.request.stage) },
-                                        secondaryText = { Text("Stage") }
-                                    )
-                                    ListItem(
-                                        text = { Text("${viewModel.request.remainingForegroundTimeInMs}") },
-                                        secondaryText = { Text("Remaining Foreground Time") }
-                                    )
-                                    ListItem(
-                                        text = { Text("${viewModel.request.inactivityTimeoutInMs}") },
-                                        secondaryText = { Text("Inactivity Timeout") }
-                                    )
-                                    Divider()
-                                }
-                                TextButton(onClick = { expanded = !expanded }) {
-                                    Text(if (expanded) "Collapse" else "Expand")
-                                }
-                            }
-                        }
-                        Card(
-                            border = BorderStroke(1.dp, Color.LightGray),
-                            modifier = Modifier.padding(5.dp)
-                        ) {
-                            Column {
-                                LaunchedEffect(
-                                    key1 = true,
-                                    block = {
-                                        foregroundTimeTimer {
-                                            viewModel.elapsedForegroundTimeMs = it
-                                        }
-                                    }
-                                )
-                                ListItem(
-                                    text = { Text("Result Data") }
-                                )
-                                Column(Modifier.selectableGroup()) {
-                                    RunLearningUnitResult.ResultType.values()
-                                        .forEach { result ->
-                                            Row(
-                                                Modifier
-                                                    .fillMaxWidth()
-                                                    .height(56.dp)
-                                                    .selectable(
-                                                        selected = (result == viewModel.resultType),
-                                                        onClick = { viewModel.resultType = result },
-                                                        role = Role.RadioButton
-                                                    )
-                                                    .padding(horizontal = 16.dp),
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-                                                RadioButton(
-                                                    selected = (result == viewModel.resultType),
-                                                    onClick = null
-                                                )
-                                                Text(
-                                                    text = result.toString(),
-                                                    style = MaterialTheme.typography.body1.merge(),
-                                                    modifier = Modifier.padding(start = 16.dp)
-                                                )
-                                            }
-                                        }
-                                }
-                                if (viewModel.resultType != RunLearningUnitResult.ResultType.Error) {
-                                    Row {
-                                        ListItem(
-                                            text = { Text(DecimalFormat("0.00").format(viewModel.score)) },
-                                            secondaryText = { Text("Score") },
-                                            modifier = Modifier.fillMaxWidth(0.3f)
-                                        )
-                                        Slider(
-                                            value = viewModel.score,
-                                            onValueChange = { viewModel.score = it },
-                                            modifier = Modifier
-                                                .padding(5.dp, 0.dp)
-                                                .fillMaxWidth(1f)
-                                        )
-                                    }
-                                }
-                                ListItem(
-                                    text = { Text("${viewModel.elapsedForegroundTimeMs}") },
-                                    secondaryText = { Text("Foreground Time") }
-                                )
-                                if (viewModel.resultType == RunLearningUnitResult.ResultType.Error) {
-                                    OutlinedTextField(
-                                        value = viewModel.errorDetails,
-                                        onValueChange = { viewModel.errorDetails = it },
-                                        label = { Text("Error Details") },
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(5.dp)
-                                    )
-                                }
-                                OutlinedTextField(
-                                    value = viewModel.additionalData,
-                                    onValueChange = { viewModel.additionalData = it },
-                                    label = { Text("Additional Data") },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(5.dp)
-                                )
-                            }
-                        }
-                        Button(
-                            onClick = { sendResult(viewModel.getResult()) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(5.dp)
-                        ) {
-                            Text("Send Result")
-                        }
+                        RequestData()
+                        ResultData()
+                        SendResultButton()
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun RequestData() {
+        Card(
+            border = BorderStroke(1.dp, Color.LightGray),
+            modifier = Modifier.padding(5.dp)
+        ) {
+            Column {
+                var expanded by remember { mutableStateOf(false) }
+                ListItem(
+                    text = { Text("Request Data") }
+                )
+                Divider()
+                if (expanded) {
+                    ListItem(
+                        text = { Text(viewModel.request.learningUnitId) },
+                        secondaryText = { Text("Learning Unit ID") }
+                    )
+                    ListItem(
+                        text = { Text(viewModel.request.learningUnitRunId) },
+                        secondaryText = { Text("Learning Unit Run ID") }
+                    )
+                    ListItem(
+                        text = { Text(viewModel.request.learnerId) },
+                        secondaryText = { Text("Learner ID") }
+                    )
+                    ListItem(
+                        text = { Text(viewModel.request.schoolId) },
+                        secondaryText = { Text("School ID") }
+                    )
+                    ListItem(
+                        text = { Text(viewModel.request.stage) },
+                        secondaryText = { Text("Stage") }
+                    )
+                    ListItem(
+                        text = { Text("${viewModel.request.remainingForegroundTimeInMs}") },
+                        secondaryText = { Text("Remaining Foreground Time") }
+                    )
+                    ListItem(
+                        text = { Text("${viewModel.request.inactivityTimeoutInMs}") },
+                        secondaryText = { Text("Inactivity Timeout") }
+                    )
+                    Divider()
+                }
+                TextButton(onClick = { expanded = !expanded }) {
+                    Text(if (expanded) "Collapse" else "Expand")
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun ResultData() {
+        Card(
+            border = BorderStroke(1.dp, Color.LightGray),
+            modifier = Modifier.padding(5.dp)
+        ) {
+            Column {
+                LaunchedEffect(
+                    key1 = true,
+                    block = {
+                        foregroundTimeTimer {
+                            viewModel.elapsedForegroundTimeMs = it
+                        }
+                    }
+                )
+                ListItem(
+                    text = { Text("Result Data") }
+                )
+                Column(Modifier.selectableGroup()) {
+                    RunLearningUnitResult.ResultType.values()
+                        .forEach { result ->
+                            Row(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(56.dp)
+                                    .selectable(
+                                        selected = (result == viewModel.resultType),
+                                        onClick = { viewModel.resultType = result },
+                                        role = Role.RadioButton
+                                    )
+                                    .padding(horizontal = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                RadioButton(
+                                    selected = (result == viewModel.resultType),
+                                    onClick = null
+                                )
+                                Text(
+                                    text = result.toString(),
+                                    style = MaterialTheme.typography.body1.merge(),
+                                    modifier = Modifier.padding(start = 16.dp)
+                                )
+                            }
+                        }
+                }
+                if (viewModel.resultType != RunLearningUnitResult.ResultType.Error) {
+                    Row {
+                        ListItem(
+                            text = { Text(DecimalFormat("0.00").format(viewModel.score)) },
+                            secondaryText = { Text("Score") },
+                            modifier = Modifier.fillMaxWidth(0.3f)
+                        )
+                        Slider(
+                            value = viewModel.score,
+                            onValueChange = { viewModel.score = it },
+                            modifier = Modifier
+                                .padding(5.dp, 0.dp)
+                                .fillMaxWidth(1f)
+                        )
+                    }
+                }
+                ListItem(
+                    text = { Text("${viewModel.elapsedForegroundTimeMs}") },
+                    secondaryText = { Text("Foreground Time") }
+                )
+                if (viewModel.resultType == RunLearningUnitResult.ResultType.Error) {
+                    OutlinedTextField(
+                        value = viewModel.errorDetails,
+                        onValueChange = { viewModel.errorDetails = it },
+                        label = { Text("Error Details") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp)
+                    )
+                }
+                OutlinedTextField(
+                    value = viewModel.additionalData,
+                    onValueChange = { viewModel.additionalData = it },
+                    label = { Text("Additional Data") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun SendResultButton() {
+        Button(
+            onClick = { sendResult(viewModel.getResult()) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
+        ) {
+            Text("Send Result")
         }
     }
 
