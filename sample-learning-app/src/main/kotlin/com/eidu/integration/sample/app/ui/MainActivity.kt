@@ -57,15 +57,7 @@ class MainActivity : ComponentActivity() {
             viewModel.request = RunLearningUnitRequest.fromIntent(intent)
         } catch (e: IllegalArgumentException) {
             Log.e("MainActivity", "onCreate: invalid launch intent: $intent", e)
-            setResult(
-                RESULT_OK,
-                RunLearningUnitResult.ofError(
-                    0L,
-                    "Invalid Intent received: $intent",
-                    null
-                ).toIntent()
-            )
-            finish()
+            sendResult(RunLearningUnitResult.ofError(0L, "Invalid Intent received: $intent", null))
             return
         }
 
