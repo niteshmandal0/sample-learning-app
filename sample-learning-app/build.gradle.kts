@@ -91,6 +91,7 @@ dependencies {
 
     // Hilt/Dagger DI
     implementation("com.google.dagger:hilt-android:${Versions.hilt}")
+    implementation("androidx.lifecycle:lifecycle-process:2.4.0")
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
 
     // EIDU dependencies

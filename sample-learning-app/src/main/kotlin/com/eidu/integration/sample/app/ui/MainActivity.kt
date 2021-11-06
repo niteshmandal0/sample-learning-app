@@ -41,9 +41,8 @@ import com.eidu.integration.RunLearningUnitRequest
 import com.eidu.integration.RunLearningUnitResult
 import com.eidu.integration.sample.app.theme.EIDUIntegrationSampleAppTheme
 import com.eidu.integration.sample.app.shared.EiduScaffold
+import kotlinx.coroutines.delay
 import java.text.DecimalFormat
-import java.util.Timer
-import java.util.TimerTask
 
 @OptIn(ExperimentalMaterialApi::class)
 class MainActivity : ComponentActivity() {
@@ -127,19 +126,23 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun ResultData() {
+        var elapsedForegroundTimeMs by remember { mutableStateOf(0L) }
+
+        LaunchedEffect(
+            key1 = true,
+            block = {
+                while (true) {
+                    elapsedForegroundTimeMs = viewModel.elapsedForegroundTimeMs
+                    delay(100)
+                }
+            }
+        )
+
         Card(
             border = BorderStroke(1.dp, Color.LightGray),
             modifier = Modifier.padding(5.dp)
         ) {
             Column {
-                LaunchedEffect(
-                    key1 = true,
-                    block = {
-                        foregroundTimeTimer {
-                            viewModel.elapsedForegroundTimeMs = it
-                        }
-                    }
-                )
                 ListItem(
                     text = { Text("Result Data") }
                 )
@@ -187,7 +190,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 ListItem(
-                    text = { Text("${viewModel.elapsedForegroundTimeMs}") },
+                    text = { Text("$elapsedForegroundTimeMs ms") },
                     secondaryText = { Text("Foreground Time") }
                 )
                 if (viewModel.resultType == RunLearningUnitResult.ResultType.Error) {
@@ -228,16 +231,4 @@ class MainActivity : ComponentActivity() {
         setResult(RESULT_OK, result.toIntent())
         finish()
     }
-
-    private fun foregroundTimeTimer(updateState: (Long) -> Unit) =
-        Timer().schedule(
-            object : TimerTask() {
-                val startTime = System.currentTimeMillis()
-                override fun run() {
-                    updateState(System.currentTimeMillis() - startTime)
-                }
-            },
-            0L,
-            1000L
-        )
 }
