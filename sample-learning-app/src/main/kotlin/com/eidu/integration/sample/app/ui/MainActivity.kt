@@ -44,6 +44,9 @@ import com.eidu.integration.sample.app.shared.EiduScaffold
 import kotlinx.coroutines.delay
 import java.text.DecimalFormat
 
+/**
+ * This is the activity that is launched by the EIDU app with the request to run a learning unit.
+ */
 @OptIn(ExperimentalMaterialApi::class)
 class MainActivity : ComponentActivity() {
 
@@ -52,14 +55,23 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        /*
+          This is where we extract a RunLearningUnitRequest from the calling intent so that we
+          can use its information to control the subsequent behaviour of our app.
+         */
         try {
             viewModel.request = RunLearningUnitRequest.fromIntent(intent)
         } catch (e: IllegalArgumentException) {
+            // If we couldn't parse the intent, return a useful error result.
             Log.e("MainActivity", "onCreate: invalid launch intent: $intent", e)
             sendResult(RunLearningUnitResult.ofError(0L, "Invalid Intent received: $intent", null))
             return
         }
 
+        /*
+          Create a UI that allows viewing the request, and editing and returning the result to the
+          EIDU app.
+         */
         setContent {
             EIDUIntegrationSampleAppTheme {
                 EiduScaffold(title = { Text("Run of ${viewModel.request.learningUnitId}") }) {
@@ -74,6 +86,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Composes a list that describes the information from our request.
+     */
     @Composable
     private fun RequestData() {
         Card(
@@ -124,6 +139,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Composes a form that can be used to edit the result to return to the EIDU app.
+     */
     @Composable
     private fun ResultData() {
         var elapsedForegroundTimeMs by remember { mutableStateOf(0L) }
@@ -215,6 +233,10 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Composes a button that, when clicked, turns our form data into a result that is returned
+     * to the EIDU app.
+     */
     @Composable
     private fun SendResultButton() {
         Button(
@@ -227,6 +249,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Returns a [RunLearningUnitResult] to the EIDU app and finishes the activity.
+     */
     private fun sendResult(result: RunLearningUnitResult) {
         setResult(RESULT_OK, result.toIntent())
         finish()
