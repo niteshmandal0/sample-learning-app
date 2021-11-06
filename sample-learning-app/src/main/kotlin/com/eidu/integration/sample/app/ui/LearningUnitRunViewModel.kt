@@ -1,5 +1,8 @@
 package com.eidu.integration.sample.app.ui
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.eidu.integration.RunLearningUnitRequest
 import com.eidu.integration.RunLearningUnitResult
@@ -8,38 +11,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LearningUnitRunViewModel @Inject constructor() : ViewModel() {
-    fun resultFromRequest(request: RunLearningUnitRequest?): UnitResultData =
-        UnitResultData.fromRequest(request)
-}
+    lateinit var request: RunLearningUnitRequest
+    var elapsedForegroundTimeMs by mutableStateOf(0L)
+    var resultType by mutableStateOf(RunLearningUnitResult.ResultType.Success)
+    var score by mutableStateOf(0f)
+    var errorDetails by mutableStateOf("")
+    var additionalData by mutableStateOf("")
 
-data class UnitResultData(
-    val learningUnitId: String,
-    val learningUnitRunId: String,
-    val schoolId: String,
-    val learnerId: String,
-    val stage: String,
-    val remainingForegroundTime: Long?,
-    val inactivityTimeout: Long?,
-    val resultType: RunLearningUnitResult.ResultType = RunLearningUnitResult.ResultType.Success,
-    val score: Float = 0.0f,
-    val foregroundTimeInMs: Long = 0,
-    val errorDetails: String = "Error Details",
-    val additionalData: String? = "{ \"unitRating\": \"GOOD\" }"
-) {
-    fun toResult() = when (resultType) {
+    fun getResult(): RunLearningUnitResult = when (resultType) {
         RunLearningUnitResult.ResultType.Success ->
             RunLearningUnitResult.ofSuccess(
                 score,
-                foregroundTimeInMs,
+                elapsedForegroundTimeMs,
                 additionalData
             )
 
         RunLearningUnitResult.ResultType.Abort ->
-            RunLearningUnitResult.ofAbort(score, foregroundTimeInMs, additionalData)
+            RunLearningUnitResult.ofAbort(score, elapsedForegroundTimeMs, additionalData)
 
         RunLearningUnitResult.ResultType.Error ->
             RunLearningUnitResult.ofError(
-                foregroundTimeInMs,
+                elapsedForegroundTimeMs,
                 errorDetails,
                 additionalData
             )
@@ -47,29 +39,15 @@ data class UnitResultData(
         RunLearningUnitResult.ResultType.TimeUp ->
             RunLearningUnitResult.ofTimeUp(
                 score,
-                foregroundTimeInMs,
+                elapsedForegroundTimeMs,
                 additionalData
             )
 
         RunLearningUnitResult.ResultType.TimeoutInactivity ->
             RunLearningUnitResult.ofTimeoutInactivity(
                 score,
-                foregroundTimeInMs,
+                elapsedForegroundTimeMs,
                 additionalData
-            )
-    }
-
-    companion object {
-        fun fromRequest(request: RunLearningUnitRequest?) =
-            UnitResultData(
-                request?.learningUnitId ?: "No Learning Unit",
-                request?.learningUnitRunId ?: "No Learning Unit Run ID",
-                request?.schoolId ?: "No School ID",
-                request?.learnerId ?: "No Learner ID",
-                request?.stage ?: "No Stage",
-                resultType = RunLearningUnitResult.ResultType.Success,
-                remainingForegroundTime = request?.remainingForegroundTimeInMs,
-                inactivityTimeout = request?.inactivityTimeoutInMs,
             )
     }
 }

@@ -40,19 +40,20 @@ import com.eidu.integration.RunLearningUnitRequest
 import com.eidu.integration.RunLearningUnitResult
 import com.eidu.integration.sample.app.theme.EIDUIntegrationSampleAppTheme
 import com.eidu.integration.sample.app.shared.EiduScaffold
+import java.text.DecimalFormat
 import java.util.Timer
 import java.util.TimerTask
 
 class MainActivity : ComponentActivity() {
 
-    private val learningUnitRunViewModel: LearningUnitRunViewModel by viewModels()
+    private val viewModel: LearningUnitRunViewModel by viewModels()
 
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val request: RunLearningUnitRequest? = try {
-            RunLearningUnitRequest.fromIntent(intent)
+        try {
+            viewModel.request = RunLearningUnitRequest.fromIntent(intent)
         } catch (e: IllegalArgumentException) {
             Log.e("MainActivity", "onCreate: invalid launch intent: $intent", e)
             setResult(
@@ -64,19 +65,12 @@ class MainActivity : ComponentActivity() {
                 ).toIntent()
             )
             finish()
-            null
+            return
         }
 
         setContent {
             EIDUIntegrationSampleAppTheme {
-                var requestDataState by remember {
-                    mutableStateOf(
-                        learningUnitRunViewModel.resultFromRequest(
-                            request
-                        )
-                    )
-                }
-                EiduScaffold(title = { Text("Run of ${requestDataState.learningUnitId}") }) {
+                EiduScaffold(title = { Text("Run of ${viewModel.request.learningUnitId}") }) {
                     val scrollState = ScrollState(0)
                     Column(Modifier.verticalScroll(scrollState, true)) {
                         Card(
@@ -91,31 +85,31 @@ class MainActivity : ComponentActivity() {
                                 Divider()
                                 if (expanded) {
                                     ListItem(
-                                        text = { Text(requestDataState.learningUnitId) },
+                                        text = { Text(viewModel.request.learningUnitId) },
                                         secondaryText = { Text("Learning Unit ID") }
                                     )
                                     ListItem(
-                                        text = { Text(requestDataState.learningUnitRunId) },
+                                        text = { Text(viewModel.request.learningUnitRunId) },
                                         secondaryText = { Text("Learning Unit Run ID") }
                                     )
                                     ListItem(
-                                        text = { Text(requestDataState.learnerId) },
+                                        text = { Text(viewModel.request.learnerId) },
                                         secondaryText = { Text("Learner ID") }
                                     )
                                     ListItem(
-                                        text = { Text(requestDataState.schoolId) },
+                                        text = { Text(viewModel.request.schoolId) },
                                         secondaryText = { Text("School ID") }
                                     )
                                     ListItem(
-                                        text = { Text(requestDataState.stage) },
+                                        text = { Text(viewModel.request.stage) },
                                         secondaryText = { Text("Stage") }
                                     )
                                     ListItem(
-                                        text = { Text("${requestDataState.remainingForegroundTime}") },
+                                        text = { Text("${viewModel.request.remainingForegroundTimeInMs}") },
                                         secondaryText = { Text("Remaining Foreground Time") }
                                     )
                                     ListItem(
-                                        text = { Text("${requestDataState.inactivityTimeout}") },
+                                        text = { Text("${viewModel.request.inactivityTimeoutInMs}") },
                                         secondaryText = { Text("Inactivity Timeout") }
                                     )
                                     Divider()
@@ -134,8 +128,7 @@ class MainActivity : ComponentActivity() {
                                     key1 = true,
                                     block = {
                                         foregroundTimeTimer {
-                                            requestDataState =
-                                                requestDataState.copy(foregroundTimeInMs = it)
+                                            viewModel.elapsedForegroundTimeMs = it
                                         }
                                     }
                                 )
@@ -150,18 +143,15 @@ class MainActivity : ComponentActivity() {
                                                     .fillMaxWidth()
                                                     .height(56.dp)
                                                     .selectable(
-                                                        selected = (result == requestDataState.resultType),
-                                                        onClick = {
-                                                            requestDataState =
-                                                                requestDataState.copy(resultType = result)
-                                                        },
+                                                        selected = (result == viewModel.resultType),
+                                                        onClick = { viewModel.resultType = result },
                                                         role = Role.RadioButton
                                                     )
                                                     .padding(horizontal = 16.dp),
                                                 verticalAlignment = Alignment.CenterVertically
                                             ) {
                                                 RadioButton(
-                                                    selected = (result == requestDataState.resultType),
+                                                    selected = (result == viewModel.resultType),
                                                     onClick = null
                                                 )
                                                 Text(
@@ -172,18 +162,16 @@ class MainActivity : ComponentActivity() {
                                             }
                                         }
                                 }
-                                if (requestDataState.resultType != RunLearningUnitResult.ResultType.Error) {
+                                if (viewModel.resultType != RunLearningUnitResult.ResultType.Error) {
                                     Row {
                                         ListItem(
-                                            text = { Text("${requestDataState.score}") },
+                                            text = { Text(DecimalFormat("0.00").format(viewModel.score)) },
                                             secondaryText = { Text("Score") },
                                             modifier = Modifier.fillMaxWidth(0.3f)
                                         )
                                         Slider(
-                                            value = requestDataState.score,
-                                            onValueChange = {
-                                                requestDataState = requestDataState.copy(score = it)
-                                            },
+                                            value = viewModel.score,
+                                            onValueChange = { viewModel.score = it },
                                             modifier = Modifier
                                                 .padding(5.dp, 0.dp)
                                                 .fillMaxWidth(1f)
@@ -191,16 +179,13 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                                 ListItem(
-                                    text = { Text("${requestDataState.foregroundTimeInMs}") },
+                                    text = { Text("${viewModel.elapsedForegroundTimeMs}") },
                                     secondaryText = { Text("Foreground Time") }
                                 )
-                                if (requestDataState.resultType == RunLearningUnitResult.ResultType.Error) {
+                                if (viewModel.resultType == RunLearningUnitResult.ResultType.Error) {
                                     OutlinedTextField(
-                                        value = requestDataState.errorDetails,
-                                        onValueChange = {
-                                            requestDataState =
-                                                requestDataState.copy(errorDetails = it)
-                                        },
+                                        value = viewModel.errorDetails,
+                                        onValueChange = { viewModel.errorDetails = it },
                                         label = { Text("Error Details") },
                                         modifier = Modifier
                                             .fillMaxWidth()
@@ -208,11 +193,8 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                                 OutlinedTextField(
-                                    value = requestDataState.additionalData ?: "",
-                                    onValueChange = {
-                                        requestDataState =
-                                            requestDataState.copy(additionalData = it)
-                                    },
+                                    value = viewModel.additionalData,
+                                    onValueChange = { viewModel.additionalData = it },
                                     label = { Text("Additional Data") },
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -221,7 +203,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                         Button(
-                            onClick = { sendResult(requestDataState) },
+                            onClick = { sendResult(viewModel.getResult()) },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(5.dp)
@@ -234,8 +216,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun sendResult(unitResultData: UnitResultData) {
-        setResult(RESULT_OK, unitResultData.toResult().toIntent())
+    private fun sendResult(result: RunLearningUnitResult) {
+        setResult(RESULT_OK, result.toIntent())
         finish()
     }
 
