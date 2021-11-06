@@ -1,4 +1,3 @@
-import extensions.getLocalPropertyOrNull
 import utils.getAppVersion
 import utils.toVersionCode
 
@@ -31,14 +30,10 @@ android {
 
     signingConfigs {
         create(BuildType.RELEASE) {
-            storeFile = file(
-                getLocalPropertyOrNull("sign.keystore.path")
-                    ?: System.getenv("ANDROID_KEYSTORE_PATH") ?: "release.keystore"
-            )
-            storePassword =
-                getLocalPropertyOrNull("sign.keystore.password") ?: System.getenv("ANDROID_KEYSTORE_PASSWORD")
-            keyAlias = getLocalPropertyOrNull("sign.key.alias") ?: System.getenv("ANDROID_KEY_ALIAS")
-            keyPassword = getLocalPropertyOrNull("sign.key.password") ?: System.getenv("ANDROID_KEY_PASSWORD")
+            storeFile = file("dummy-keystore.jks")
+            storePassword = "release"
+            keyAlias = "release"
+            keyPassword = "release"
         }
     }
 
