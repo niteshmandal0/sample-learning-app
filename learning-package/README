@@ -1,0 +1,5 @@
+The contents of this directory are used to generate the learning package. While in a production
+environment, most of this would typically be generated, our sample app simply adds its APK to
+this directory and zips it, the result being the learning package.
+
+See https://dev.eidu.com/creating-a-learning-package for details.

@@ -1,3 +1,6 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
+import packaging.generateLearningPackage
+
 plugins {
     id("com.github.ben-manes.versions") version "0.39.0"
 }
@@ -32,3 +35,7 @@ tasks.register("installGitHooks", Exec::class) {
 }
 
 tasks.getByPath(":sample-learning-app:preBuild").dependsOn(":installGitHooks")
+
+tasks.register("generateLearningPackage") {
+    doLast { generateLearningPackage() }
+}.dependsOn(":sample-learning-app:assembleRelease")
