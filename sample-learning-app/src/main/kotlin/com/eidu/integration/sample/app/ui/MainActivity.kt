@@ -41,6 +41,7 @@ import com.eidu.integration.RunLearningUnitRequest
 import com.eidu.integration.RunLearningUnitResult
 import com.eidu.integration.sample.app.theme.EIDUIntegrationSampleAppTheme
 import com.eidu.integration.sample.app.shared.EiduScaffold
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import java.text.DecimalFormat
 
@@ -48,6 +49,7 @@ import java.text.DecimalFormat
  * This is the activity that is launched by the EIDU app with the request to run a learning unit.
  */
 @OptIn(ExperimentalMaterialApi::class)
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel: LearningUnitRunViewModel by viewModels()

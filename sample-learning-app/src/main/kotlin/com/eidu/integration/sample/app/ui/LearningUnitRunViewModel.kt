@@ -14,9 +14,9 @@ import javax.inject.Inject
  * This ViewModel backs the information that is displayed by and can be edited in [MainActivity].
  */
 @HiltViewModel
-class LearningUnitRunViewModel @Inject constructor() : ViewModel() {
-    private val stopwatch = ForegroundStopwatch()
-
+class LearningUnitRunViewModel @Inject constructor(
+    private val stopwatch: ForegroundStopwatch
+) : ViewModel() {
     /**
      * The request that was passed to us by the EIDU app.
      */

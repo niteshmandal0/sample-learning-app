@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import java.io.Closeable
+import javax.inject.Inject
 
 /**
  * A wrapper for a [Stopwatch] which starts and stops it in accordance with an observed [Lifecycle].
@@ -13,9 +14,12 @@ import java.io.Closeable
  * should be invoked so that any allocated resources can be freed up.
  */
 class ForegroundStopwatch(
-    private val lifecycle: Lifecycle = ProcessLifecycleOwner.get().lifecycle,
-    private val stopwatch: Stopwatch = Stopwatch()
+    private val lifecycle: Lifecycle,
+    private val stopwatch: Stopwatch
 ) : Closeable {
+
+    @Inject
+    constructor() : this(ProcessLifecycleOwner.get().lifecycle, Stopwatch())
 
     /**
      * The number of milliseconds that have elapsed since the instantiation of this class while
