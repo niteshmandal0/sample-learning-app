@@ -35,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.eidu.integration.RunLearningUnitRequest
@@ -178,7 +179,8 @@ class MainActivity : ComponentActivity() {
                                         onClick = { viewModel.resultType = result },
                                         role = Role.RadioButton
                                     )
-                                    .padding(horizontal = 16.dp),
+                                    .padding(horizontal = 16.dp)
+                                    .testTag("ResultType$result"),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 RadioButton(
@@ -206,6 +208,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(5.dp, 0.dp)
                                 .fillMaxWidth(1f)
+                                .testTag("Score")
                         )
                     }
                 }
@@ -221,6 +224,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(5.dp)
+                            .testTag("ErrorDetails")
                     )
                 }
                 OutlinedTextField(
@@ -230,6 +234,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(5.dp)
+                        .testTag("AdditionalData")
                 )
             }
         }
@@ -246,6 +251,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp)
+                .testTag("SendResultButton")
         ) {
             Text("Send Result")
         }

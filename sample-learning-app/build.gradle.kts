@@ -65,6 +65,12 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.compose
     }
+
+    packagingOptions {
+        // for instrumented tests
+        resources.excludes += "META-INF/AL2.0"
+        resources.excludes += "META-INF/LGPL2.1"
+    }
 }
 
 dependencies {
@@ -94,8 +100,12 @@ dependencies {
 
     // Test
     testImplementation("junit:junit:4.13.2")
+    testImplementation("com.willowtreeapps.assertk:assertk:0.25")
+    testImplementation("io.mockk:mockk:1.12.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.compose}")
     debugImplementation("androidx.compose.ui:ui-tooling:${Versions.compose}")
+    androidTestImplementation("androidx.test:rules:1.4.0")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
+    androidTestImplementation("com.willowtreeapps.assertk:assertk:0.25")
 }
