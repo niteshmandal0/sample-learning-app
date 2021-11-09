@@ -10,7 +10,7 @@ import javax.inject.Inject
  * A wrapper for a [Stopwatch] which starts and stops it in accordance with an observed [Lifecycle].
  * By default, that lifecycle is the one of the app, which should be appropriate for most use cases.
  *
- * In cases where this instance is not required anymore _before_ [lifecycle] is stopped, [close]
+ * In cases where this instance is not required anymore _before_ [lifecycle] is destroyed, [close]
  * should be invoked so that any allocated resources can be freed up.
  */
 class ForegroundStopwatch(
@@ -31,7 +31,7 @@ class ForegroundStopwatch(
         when (event) {
             Lifecycle.Event.ON_RESUME -> stopwatch.start()
             Lifecycle.Event.ON_PAUSE -> stopwatch.stop()
-            Lifecycle.Event.ON_STOP -> close()
+            Lifecycle.Event.ON_DESTROY -> close()
             else -> {}
         }
     }

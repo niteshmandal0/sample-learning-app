@@ -61,12 +61,30 @@ class ForegroundStopwatchTest {
     }
 
     @Test
-    fun `stops stopwatch and removes lifecycle observer`() {
+    fun `stops stopwatch and removes lifecycle observer when closing`() {
         `given current lifecycle state`(Lifecycle.State.RESUMED)
         `when instantiating ForegroundStopwatch`()
         `when closing ForegroundStopwatch`()
         `then stopwatch is stopped`()
         `then lifecycle observer is removed`()
+    }
+
+    @Test
+    fun `closes stopwatch when lifecycle is destroyed`() {
+        `given current lifecycle state`(Lifecycle.State.RESUMED)
+        `when instantiating ForegroundStopwatch`()
+        `when lifecycle event occurs`(Lifecycle.Event.ON_DESTROY)
+        `then stopwatch is stopped`()
+        `then lifecycle observer is removed`()
+    }
+
+    @Test
+    fun `does not close stopwatch when lifecycle is stopped`() {
+        `given current lifecycle state`(Lifecycle.State.RESUMED)
+        `when instantiating ForegroundStopwatch`()
+        `when lifecycle event occurs`(Lifecycle.Event.ON_STOP)
+        `then stopwatch is not stopped`()
+        `then lifecycle observer is not removed`()
     }
 
     private fun `given current lifecycle state`(state: Lifecycle.State) = every { lifecycle.currentState } returns state
@@ -80,9 +98,13 @@ class ForegroundStopwatchTest {
     private fun `then stopwatch is started`() = verify(exactly = 1) { stopwatch.start() }
     private fun `then stopwatch is not started`() = verify(exactly = 0) { stopwatch.start() }
     private fun `then stopwatch is stopped`() = verify(exactly = 1) { stopwatch.stop() }
+    private fun `then stopwatch is not stopped`() = verify(exactly = 0) { stopwatch.stop() }
 
     private fun `then lifecycle observer is removed`() =
         verify(exactly = 1) { lifecycle.removeObserver(lifecycleObserver) }
+
+    private fun `then lifecycle observer is not removed`() =
+        verify(exactly = 0) { lifecycle.removeObserver(lifecycleObserver) }
 
     companion object {
         private const val TOTAL_DURATION_MS = 5L
