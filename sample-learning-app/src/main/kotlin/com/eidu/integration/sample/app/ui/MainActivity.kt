@@ -147,6 +147,76 @@ class MainActivity : ComponentActivity() {
      */
     @Composable
     private fun ResultData() {
+        Card(
+            border = BorderStroke(1.dp, Color.LightGray),
+            modifier = Modifier.padding(5.dp)
+        ) {
+            Column {
+                ListItem(text = { Text("Result Data") })
+                ResultType()
+                Score()
+                ElapsedForegroundTime()
+                ErrorDetails()
+                AdditionalData()
+            }
+        }
+    }
+
+    @Composable
+    private fun ResultType() {
+        Column(Modifier.selectableGroup()) {
+            RunLearningUnitResult.ResultType.values()
+                .forEach { result ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(56.dp)
+                            .selectable(
+                                selected = (result == viewModel.resultType),
+                                onClick = { viewModel.resultType = result },
+                                role = Role.RadioButton
+                            )
+                            .padding(horizontal = 16.dp)
+                            .testTag("ResultType$result"),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = (result == viewModel.resultType),
+                            onClick = null
+                        )
+                        Text(
+                            text = result.toString(),
+                            style = MaterialTheme.typography.body1.merge(),
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+                }
+        }
+    }
+
+    @Composable
+    private fun Score() {
+        if (viewModel.resultType != RunLearningUnitResult.ResultType.Error) {
+            Row {
+                ListItem(
+                    text = { Text(DecimalFormat("0.00").format(viewModel.score)) },
+                    secondaryText = { Text("Score") },
+                    modifier = Modifier.fillMaxWidth(0.3f)
+                )
+                Slider(
+                    value = viewModel.score,
+                    onValueChange = { viewModel.score = it },
+                    modifier = Modifier
+                        .padding(5.dp, 0.dp)
+                        .fillMaxWidth(1f)
+                        .testTag("Score")
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun ElapsedForegroundTime() {
         var elapsedForegroundTimeMs by remember { mutableStateOf(0L) }
 
         LaunchedEffect(
@@ -159,85 +229,38 @@ class MainActivity : ComponentActivity() {
             }
         )
 
-        Card(
-            border = BorderStroke(1.dp, Color.LightGray),
-            modifier = Modifier.padding(5.dp)
-        ) {
-            Column {
-                ListItem(
-                    text = { Text("Result Data") }
-                )
-                Column(Modifier.selectableGroup()) {
-                    RunLearningUnitResult.ResultType.values()
-                        .forEach { result ->
-                            Row(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .height(56.dp)
-                                    .selectable(
-                                        selected = (result == viewModel.resultType),
-                                        onClick = { viewModel.resultType = result },
-                                        role = Role.RadioButton
-                                    )
-                                    .padding(horizontal = 16.dp)
-                                    .testTag("ResultType$result"),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                RadioButton(
-                                    selected = (result == viewModel.resultType),
-                                    onClick = null
-                                )
-                                Text(
-                                    text = result.toString(),
-                                    style = MaterialTheme.typography.body1.merge(),
-                                    modifier = Modifier.padding(start = 16.dp)
-                                )
-                            }
-                        }
-                }
-                if (viewModel.resultType != RunLearningUnitResult.ResultType.Error) {
-                    Row {
-                        ListItem(
-                            text = { Text(DecimalFormat("0.00").format(viewModel.score)) },
-                            secondaryText = { Text("Score") },
-                            modifier = Modifier.fillMaxWidth(0.3f)
-                        )
-                        Slider(
-                            value = viewModel.score,
-                            onValueChange = { viewModel.score = it },
-                            modifier = Modifier
-                                .padding(5.dp, 0.dp)
-                                .fillMaxWidth(1f)
-                                .testTag("Score")
-                        )
-                    }
-                }
-                ListItem(
-                    text = { Text("$elapsedForegroundTimeMs ms") },
-                    secondaryText = { Text("Foreground Time") }
-                )
-                if (viewModel.resultType == RunLearningUnitResult.ResultType.Error) {
-                    OutlinedTextField(
-                        value = viewModel.errorDetails,
-                        onValueChange = { viewModel.errorDetails = it },
-                        label = { Text("Error Details") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(5.dp)
-                            .testTag("ErrorDetails")
-                    )
-                }
-                OutlinedTextField(
-                    value = viewModel.additionalData,
-                    onValueChange = { viewModel.additionalData = it },
-                    label = { Text("Additional Data") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(5.dp)
-                        .testTag("AdditionalData")
-                )
-            }
+        ListItem(
+            text = { Text("$elapsedForegroundTimeMs ms") },
+            secondaryText = { Text("Foreground Time") }
+        )
+    }
+
+    @Composable
+    private fun ErrorDetails() {
+        if (viewModel.resultType == RunLearningUnitResult.ResultType.Error) {
+            OutlinedTextField(
+                value = viewModel.errorDetails,
+                onValueChange = { viewModel.errorDetails = it },
+                label = { Text("Error Details") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+                    .testTag("ErrorDetails")
+            )
         }
+    }
+
+    @Composable
+    private fun AdditionalData() {
+        OutlinedTextField(
+            value = viewModel.additionalData,
+            onValueChange = { viewModel.additionalData = it },
+            label = { Text("Additional Data") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
+                .testTag("AdditionalData")
+        )
     }
 
     /**
