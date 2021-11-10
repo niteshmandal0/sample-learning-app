@@ -36,10 +36,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.eidu.integration.RunLearningUnitRequest
 import com.eidu.integration.RunLearningUnitResult
+import com.eidu.integration.sample.app.R
 import com.eidu.integration.sample.app.theme.EIDUIntegrationSampleAppTheme
 import com.eidu.integration.sample.app.shared.EiduScaffold
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,7 +79,7 @@ class MainActivity : ComponentActivity() {
          */
         setContent {
             EIDUIntegrationSampleAppTheme {
-                EiduScaffold(title = { Text("Run of ${viewModel.request.learningUnitId}") }) {
+                EiduScaffold(title = { Text(stringResource(R.string.runOf, viewModel.request.learningUnitId)) }) {
                     val scrollState = ScrollState(0)
                     Column(Modifier.verticalScroll(scrollState, true)) {
                         RequestData()
@@ -101,42 +103,52 @@ class MainActivity : ComponentActivity() {
             Column {
                 var expanded by remember { mutableStateOf(false) }
                 ListItem(
-                    text = { Text("Request Data") }
+                    text = { Text(stringResource(R.string.requestDataTitle)) }
                 )
                 Divider()
                 if (expanded) {
                     ListItem(
                         text = { Text(viewModel.request.learningUnitId) },
-                        secondaryText = { Text("Learning Unit ID") }
+                        secondaryText = { Text(stringResource(R.string.learningUnitId)) }
                     )
                     ListItem(
                         text = { Text(viewModel.request.learningUnitRunId) },
-                        secondaryText = { Text("Learning Unit Run ID") }
+                        secondaryText = { Text(stringResource(R.string.learningUnitRunId)) }
                     )
                     ListItem(
                         text = { Text(viewModel.request.learnerId) },
-                        secondaryText = { Text("Learner ID") }
+                        secondaryText = { Text(stringResource(R.string.learnerId)) }
                     )
                     ListItem(
                         text = { Text(viewModel.request.schoolId) },
-                        secondaryText = { Text("School ID") }
+                        secondaryText = { Text(stringResource(R.string.schoolId)) }
                     )
                     ListItem(
                         text = { Text(viewModel.request.stage) },
-                        secondaryText = { Text("Stage") }
+                        secondaryText = { Text(stringResource(R.string.stage)) }
                     )
                     ListItem(
-                        text = { Text("${viewModel.request.remainingForegroundTimeInMs}") },
-                        secondaryText = { Text("Remaining Foreground Time") }
+                        text = {
+                            Text(
+                                viewModel.request.remainingForegroundTimeInMs?.let { stringResource(R.string.ms, it) }
+                                    ?: stringResource(R.string.none)
+                            )
+                        },
+                        secondaryText = { Text(stringResource(R.string.remainingForegroundTime)) }
                     )
                     ListItem(
-                        text = { Text("${viewModel.request.inactivityTimeoutInMs}") },
-                        secondaryText = { Text("Inactivity Timeout") }
+                        text = {
+                            Text(
+                                viewModel.request.inactivityTimeoutInMs?.let { stringResource(R.string.ms, it) }
+                                    ?: stringResource(R.string.none)
+                            )
+                        },
+                        secondaryText = { Text(stringResource(R.string.inactivityTimeout)) }
                     )
                     Divider()
                 }
                 TextButton(onClick = { expanded = !expanded }) {
-                    Text(if (expanded) "Collapse" else "Expand")
+                    Text(if (expanded) stringResource(R.string.collapse) else stringResource(R.string.expand))
                 }
             }
         }
@@ -152,7 +164,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.padding(5.dp)
         ) {
             Column {
-                ListItem(text = { Text("Result Data") })
+                ListItem(text = { Text(stringResource(R.string.resultDataTitle)) })
                 ResultType()
                 Score()
                 ElapsedForegroundTime()
@@ -200,7 +212,7 @@ class MainActivity : ComponentActivity() {
             Row {
                 ListItem(
                     text = { Text(DecimalFormat("0.00").format(viewModel.score)) },
-                    secondaryText = { Text("Score") },
+                    secondaryText = { Text(stringResource(R.string.score)) },
                     modifier = Modifier.fillMaxWidth(0.3f)
                 )
                 Slider(
@@ -230,8 +242,8 @@ class MainActivity : ComponentActivity() {
         )
 
         ListItem(
-            text = { Text("$elapsedForegroundTimeMs ms") },
-            secondaryText = { Text("Foreground Time") }
+            text = { Text(stringResource(R.string.ms, elapsedForegroundTimeMs)) },
+            secondaryText = { Text(stringResource(R.string.foregroundTime)) }
         )
     }
 
@@ -241,7 +253,7 @@ class MainActivity : ComponentActivity() {
             OutlinedTextField(
                 value = viewModel.errorDetails,
                 onValueChange = { viewModel.errorDetails = it },
-                label = { Text("Error Details") },
+                label = { Text(stringResource(R.string.errorDetails)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(5.dp)
@@ -255,7 +267,7 @@ class MainActivity : ComponentActivity() {
         OutlinedTextField(
             value = viewModel.additionalData,
             onValueChange = { viewModel.additionalData = it },
-            label = { Text("Additional Data") },
+            label = { Text(stringResource(R.string.additionalData)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp)
@@ -276,7 +288,7 @@ class MainActivity : ComponentActivity() {
                 .padding(5.dp)
                 .testTag("SendResultButton")
         ) {
-            Text("Send Result")
+            Text(stringResource(R.string.sendResult))
         }
     }
 

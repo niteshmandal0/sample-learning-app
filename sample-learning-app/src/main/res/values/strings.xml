@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">Sample Learning App</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Sample Learning App</string>
+    <string name="collapse">Collapse</string>
+    <string name="expand">Expand</string>
+    <string name="ms">%1$d ms</string>
+    <string name="none">-</string>
+    <string name="runOf">Run of %1$s</string>
+    <string name="learningUnitId">Learning unit ID</string>
+    <string name="learningUnitRunId">Run ID</string>
+    <string name="additionalData">Additional data</string>
+    <string name="errorDetails">Error details</string>
+    <string name="foregroundTime">Foreground time</string>
+    <string name="score">Score</string>
+    <string name="resultDataTitle">Result</string>
+    <string name="requestDataTitle">Request</string>
+    <string name="learnerId">Learner ID</string>
+    <string name="schoolId">School ID</string>
+    <string name="stage">Stage</string>
+    <string name="remainingForegroundTime">Remaining foreground time</string>
+    <string name="inactivityTimeout">Inactivity timeout</string>
+    <string name="sendResult">Send Result</string>
 </resources>

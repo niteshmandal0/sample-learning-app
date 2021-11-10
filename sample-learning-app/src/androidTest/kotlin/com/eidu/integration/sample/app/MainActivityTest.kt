@@ -45,8 +45,8 @@ class MainActivityTest {
         composeTestRule.onNodeWithText(LEARNER_ID).assertIsDisplayed()
         composeTestRule.onNodeWithText(SCHOOL_ID).assertIsDisplayed()
         composeTestRule.onNodeWithText(STAGE).assertIsDisplayed()
-        composeTestRule.onNodeWithText(REMAINING_FOREGROUND_TIME_MS.toString()).assertIsDisplayed()
-        composeTestRule.onNodeWithText(INACTIVITY_TIMEOUT_MS.toString()).assertIsDisplayed()
+        composeTestRule.onNodeWithText("$REMAINING_FOREGROUND_TIME_MS ms").assertIsDisplayed()
+        composeTestRule.onNodeWithText("$INACTIVITY_TIMEOUT_MS ms").assertIsDisplayed()
     }
 
     @Test
