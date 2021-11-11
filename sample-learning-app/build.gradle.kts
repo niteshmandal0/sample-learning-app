@@ -77,22 +77,18 @@ dependencies {
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("com.google.android.material:material:1.4.0")
+    implementation("androidx.lifecycle:lifecycle-process:2.4.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
     // Compose
     implementation("androidx.compose.ui:ui:${Versions.compose}")
     implementation("androidx.compose.material:material:${Versions.compose}")
-    implementation("androidx.compose.ui:ui-tooling-preview:${Versions.compose}")
     implementation("androidx.compose.runtime:runtime:${Versions.compose}")
     implementation("androidx.compose.runtime:runtime-livedata:${Versions.compose}")
-    implementation("androidx.navigation:navigation-compose:${Versions.navigation}")
-    implementation("androidx.compose.material:material-icons-extended:${Versions.compose}")
     implementation("androidx.activity:activity-compose:1.4.0")
 
     // Hilt/Dagger DI
     implementation("com.google.dagger:hilt-android:${Versions.hilt}")
-    implementation("androidx.lifecycle:lifecycle-process:2.4.0")
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
 
     // EIDU dependencies
