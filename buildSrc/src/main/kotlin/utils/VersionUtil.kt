@@ -41,15 +41,6 @@ fun Project.getAppVersion(): String {
     }
 }
 
-fun Project.getAppVersionUserFacingName(): String {
-    val versionName = getAppVersion()
-    val version = versionNameToVersionArray(versionName)
-    val suffix = versionNameSuffix(versionName)
-    return "${version[0] * 100 + version[1]}" +
-        if (version[2] > 0) ".${version[2]}" else "" +
-        if (suffix != "") "-${suffix}" else ""
-}
-
 fun String.toVersionCode(): Int {
     val parts = split('-')[0].split('.')
     return (parts[0].toInt() * 1000 + parts[1].toInt()) * 1000 + parts[2].toInt()
@@ -61,11 +52,3 @@ private fun tagToVersionArray(versionTag: String): List<Int> =
     tagToVersionName(versionTag).split('.').map { it.toInt() }
 
 private fun versionArrayToVersionName(versionArray: List<Int>): String = versionArray.joinToString(".")
-
-private fun versionNameToVersionArray(versionName: String): List<Int> =
-    versionName.split('-')[0].split('.').map { it.toInt() }
-
-private fun versionNameSuffix(versionName: String): String {
-    val parts = versionName.split('-')
-    return if (parts.count() > 1) parts[1] else ""
-}

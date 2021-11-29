@@ -2,8 +2,6 @@ package utils
 
 import org.gradle.api.Project
 
-fun Project.getGitHash(): String = run("git rev-parse HEAD")
-
 fun Project.getGitBranch(): String = run("git rev-parse --abbrev-ref HEAD")
 
 fun Project.getCurrentCommitVersionTag(): String? =
