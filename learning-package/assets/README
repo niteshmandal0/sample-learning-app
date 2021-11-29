@@ -1,5 +1,5 @@
-NOTE: Asset provision functionality is in development and not yet included in the EIDU platform.
-Put any additional asset files in here that your app requires.
+Put here any additional asset files that your app requires.
+
 Asset files can be in any format your app can read. You should not put asset bundles (e.g. as ZIP files) in here.
 Instead, you should replicate your desired asset file structure, including folders. In your learning-units.json file
 you should then refer to individual files or folders by their relative path, with this folder considered the root.

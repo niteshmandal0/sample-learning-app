@@ -1,5 +1,9 @@
 package com.eidu.integration.sample.app.ui
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -48,6 +52,25 @@ class LearningUnitRunViewModel @Inject constructor(
      * Optionally, an arbitrary string to be included in the reporting of the result.
      */
     var additionalData by mutableStateOf("")
+
+    /**
+     * Retrieves the asset at [path] and decodes it as a [String].
+     */
+    fun getTextAsset(context: Context, path: String): String =
+        request.getAssetAsStream(context, path).reader().use { it.readText() }
+
+    /**
+     * Retrieves the asset at [path] and decodes it as a [Bitmap].
+     */
+    fun getImageAsset(context: Context, path: String): Bitmap =
+        request.getAssetAsStream(context, path).use {
+            BitmapFactory.decodeStream(it)
+        }
+
+    /**
+     * Retrieves the [Uri] of the asset at [path].
+     */
+    fun getAssetUri(path: String): Uri = request.getAssetAsUri(path)
 
     /**
      * Constructs and returns a [RunLearningUnitResult] from the current state of this instance.

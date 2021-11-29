@@ -14,10 +14,12 @@
     <string name="score">Score</string>
     <string name="resultDataTitle">Result</string>
     <string name="requestDataTitle">Request</string>
+    <string name="assetsTitle">Assets</string>
     <string name="learnerId">Learner ID</string>
     <string name="schoolId">School ID</string>
     <string name="stage">Stage</string>
     <string name="remainingForegroundTime">Remaining foreground time</string>
     <string name="inactivityTimeout">Inactivity timeout</string>
     <string name="sendResult">Send Result</string>
+    <string name="playAudio">Play Audio</string>
 </resources>

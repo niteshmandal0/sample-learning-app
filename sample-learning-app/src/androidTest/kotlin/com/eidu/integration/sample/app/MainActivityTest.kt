@@ -5,10 +5,13 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.center
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performGesture
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
@@ -39,7 +42,7 @@ class MainActivityTest {
 
     @Test
     fun displaysRequestInformation() {
-        composeTestRule.onNodeWithText("Expand").performClick()
+        composeTestRule.onAllNodesWithText("Expand").onFirst().performClick()
         composeTestRule.onNodeWithText(LEARNING_UNIT_ID).assertIsDisplayed()
         composeTestRule.onNodeWithText(LEARNING_UNIT_RUN_ID).assertIsDisplayed()
         composeTestRule.onNodeWithText(LEARNER_ID).assertIsDisplayed()
@@ -66,7 +69,7 @@ class MainActivityTest {
         composeTestRule.onNodeWithTag("ResultTypeError").performClick()
         composeTestRule.onNodeWithTag("ErrorDetails").performTextInput(ERROR_DETAILS)
         composeTestRule.onNodeWithTag("AdditionalData").performTextInput(ADDITIONAL_DATA)
-        composeTestRule.onNodeWithTag("SendResultButton").performClick()
+        composeTestRule.onNodeWithTag("SendResultButton").performScrollTo().performClick()
         assertThat(scenario.result.resultCode).isEqualTo(RESULT_OK)
         with(RunLearningUnitResult.fromIntent(scenario.result.resultData)) {
             assertThat(resultType).isEqualTo(RunLearningUnitResult.ResultType.Error)
@@ -80,7 +83,7 @@ class MainActivityTest {
         composeTestRule.onNodeWithTag("ResultType$resultType").performClick()
         composeTestRule.onNodeWithTag("Score").performGesture { click(center) }
         composeTestRule.onNodeWithTag("AdditionalData").performTextInput(ADDITIONAL_DATA)
-        composeTestRule.onNodeWithTag("SendResultButton").performClick()
+        composeTestRule.onNodeWithTag("SendResultButton").performScrollTo().performClick()
         assertThat(scenario.result.resultCode).isEqualTo(RESULT_OK)
         with(RunLearningUnitResult.fromIntent(scenario.result.resultData)) {
             assertThat(resultType).isEqualTo(resultType)
@@ -108,7 +111,8 @@ class MainActivityTest {
             SCHOOL_ID,
             STAGE,
             REMAINING_FOREGROUND_TIME_MS,
-            INACTIVITY_TIMEOUT_MS
+            INACTIVITY_TIMEOUT_MS,
+            null
         )
 
         private val INTENT = REQUEST.toIntent(

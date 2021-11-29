@@ -1,14 +1,17 @@
 package com.eidu.integration.sample.app.ui
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,8 +36,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -56,6 +61,8 @@ import java.text.DecimalFormat
 class MainActivity : ComponentActivity() {
 
     private val viewModel: LearningUnitRunViewModel by viewModels()
+
+    private val mediaPlayer = MediaPlayer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +90,7 @@ class MainActivity : ComponentActivity() {
                     val scrollState = ScrollState(0)
                     Column(Modifier.verticalScroll(scrollState, true)) {
                         RequestData()
+                        Assets()
                         ResultData()
                         SendResultButton()
                     }
@@ -152,6 +160,57 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    /**
+     * Composes a list that shows the available assets.
+     */
+    @Composable
+    private fun Assets() {
+        Card(
+            border = BorderStroke(1.dp, Color.LightGray),
+            modifier = Modifier.padding(5.dp)
+        ) {
+            Column {
+                var expanded by remember { mutableStateOf(false) }
+                ListItem(
+                    text = { Text(stringResource(R.string.assetsTitle)) }
+                )
+                Divider()
+                if (expanded) {
+                    Row(
+                        modifier = Modifier.padding(5.dp).align(CenterHorizontally)
+                    ) {
+                        Text(viewModel.getTextAsset(applicationContext, TEXT_ASSET))
+                    }
+                    Row(
+                        modifier = Modifier.padding(5.dp).align(CenterHorizontally)
+                    ) {
+                        Image(
+                            viewModel.getImageAsset(applicationContext, IMAGE_ASSET).asImageBitmap(),
+                            null,
+                            modifier = Modifier.fillMaxSize(0.5f)
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.padding(5.dp).align(CenterHorizontally)
+                    ) {
+                        TextButton(onClick = ::playAudio) { Text(stringResource(R.string.playAudio)) }
+                    }
+                    Divider()
+                }
+                TextButton(onClick = { expanded = !expanded }) {
+                    Text(if (expanded) stringResource(R.string.collapse) else stringResource(R.string.expand))
+                }
+            }
+        }
+    }
+
+    private fun playAudio() {
+        mediaPlayer.reset()
+        mediaPlayer.setDataSource(applicationContext, viewModel.getAssetUri(AUDIO_ASSET))
+        mediaPlayer.prepare()
+        mediaPlayer.start()
     }
 
     /**
@@ -298,5 +357,11 @@ class MainActivity : ComponentActivity() {
     private fun sendResult(result: RunLearningUnitResult) {
         setResult(RESULT_OK, result.toIntent())
         finish()
+    }
+
+    companion object {
+        private const val TEXT_ASSET = "text.txt"
+        private const val AUDIO_ASSET = "subfolder/audio.mp3"
+        private const val IMAGE_ASSET = "subfolder/image.jpg"
     }
 }

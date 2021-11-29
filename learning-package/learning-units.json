@@ -3,52 +3,82 @@
     {
       "unitId": "Sample_Learning_Unit_01",
       "icon": "sample.png",
-      "additionalAssets": []
+      "additionalAssets": [
+        "subfolder/",
+        "text.txt"
+      ]
     },
     {
       "unitId": "Sample_Learning_Unit_02",
       "icon": "sample.png",
-      "additionalAssets": []
+      "additionalAssets": [
+        "subfolder/",
+        "text.txt"
+      ]
     },
     {
       "unitId": "Sample_Learning_Unit_03",
       "icon": "sample.png",
-      "additionalAssets": []
+      "additionalAssets": [
+        "subfolder/",
+        "text.txt"
+      ]
     },
     {
       "unitId": "Sample_Learning_Unit_04",
       "icon": "sample.png",
-      "additionalAssets": []
+      "additionalAssets": [
+        "subfolder/",
+        "text.txt"
+      ]
     },
     {
       "unitId": "Sample_Learning_Unit_05",
       "icon": "sample.png",
-      "additionalAssets": []
+      "additionalAssets": [
+        "subfolder/",
+        "text.txt"
+      ]
     },
     {
       "unitId": "Sample_Learning_Unit_06",
       "icon": "sample.png",
-      "additionalAssets": []
+      "additionalAssets": [
+        "subfolder/",
+        "text.txt"
+      ]
     },
     {
       "unitId": "Sample_Learning_Unit_07",
       "icon": "sample.png",
-      "additionalAssets": []
+      "additionalAssets": [
+        "subfolder/",
+        "text.txt"
+      ]
     },
     {
       "unitId": "Sample_Learning_Unit_08",
       "icon": "sample.png",
-      "additionalAssets": []
+      "additionalAssets": [
+        "subfolder/",
+        "text.txt"
+      ]
     },
     {
       "unitId": "Sample_Learning_Unit_09",
       "icon": "sample.png",
-      "additionalAssets": []
+      "additionalAssets": [
+        "subfolder/",
+        "text.txt"
+      ]
     },
     {
       "unitId": "Sample_Learning_Unit_10",
       "icon": "sample.png",
-      "additionalAssets": []
+      "additionalAssets": [
+        "subfolder/",
+        "text.txt"
+      ]
     }
   ]
 }
