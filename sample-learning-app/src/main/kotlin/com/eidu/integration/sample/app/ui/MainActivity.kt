@@ -74,14 +74,14 @@ class MainActivity : ComponentActivity() {
         try {
             val request = RunLearningUnitRequest.fromIntent(intent)
             if (request == null) {
-                Log.d("MainActivity", "onCreate: launch intent is not a request to launch a learning unit: $intent")
+                Log.d(TAG, "onCreate: launch intent is not a request to launch a learning unit: $intent")
                 finish()
                 return
             }
             viewModel.request = request
         } catch (e: IllegalArgumentException) {
             // If we couldn't parse the intent, return a useful error result.
-            Log.e("MainActivity", "onCreate: invalid launch intent: $intent", e)
+            Log.e(TAG, "onCreate: invalid launch intent: $intent", e)
             sendResult(RunLearningUnitResult.ofError(0L, "Invalid Intent received: $intent", null))
             return
         }
@@ -369,5 +369,6 @@ class MainActivity : ComponentActivity() {
         private const val TEXT_ASSET = "text.txt"
         private const val AUDIO_ASSET = "subfolder/audio.mp3"
         private const val IMAGE_ASSET = "subfolder/image.jpg"
+        private val TAG = MainActivity::class.simpleName
     }
 }
