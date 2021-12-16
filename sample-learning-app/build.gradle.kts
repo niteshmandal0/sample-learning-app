@@ -92,7 +92,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
 
     // EIDU dependencies
-    implementation("com.eidu:integration-library:1.5.0")
+    implementation("com.eidu:integration-library:1.6.0")
 
     // Test
     testImplementation("junit:junit:4.13.2")
