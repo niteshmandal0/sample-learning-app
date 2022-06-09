@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
         } catch (e: IllegalArgumentException) {
             // If we couldn't parse the intent, return a useful error result.
             Log.e(TAG, "onCreate: invalid launch intent: $intent", e)
-            sendResult(RunLearningUnitResult.ofError(0L, "Invalid Intent received: $intent", null))
+            sendResult(RunLearningUnitResult.ofError(null, 0L, "Invalid Intent received: $intent", null, null))
             return
         }
 

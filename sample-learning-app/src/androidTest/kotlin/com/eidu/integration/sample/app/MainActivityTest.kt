@@ -20,6 +20,7 @@ import assertk.assertThat
 import assertk.assertions.isCloseTo
 import assertk.assertions.isEqualTo
 import assertk.assertions.isLessThan
+import assertk.assertions.isNotNull
 import com.eidu.integration.RunLearningUnitRequest
 import com.eidu.integration.RunLearningUnitResult
 import com.eidu.integration.sample.app.ui.MainActivity
@@ -87,7 +88,7 @@ class MainActivityTest {
         assertThat(scenario.result.resultCode).isEqualTo(RESULT_OK)
         with(RunLearningUnitResult.fromIntent(scenario.result.resultData)) {
             assertThat(resultType).isEqualTo(resultType)
-            assertThat(score).isCloseTo(0.5f, 0.05f)
+            assertThat(score).isNotNull().isCloseTo(0.5f, 0.05f)
             assertThat(foregroundDurationInMs).isLessThan(5000)
             assertThat(additionalData).isEqualTo(ADDITIONAL_DATA)
         }

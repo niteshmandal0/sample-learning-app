@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.eidu.integration.ResultItem
 import com.eidu.integration.RunLearningUnitRequest
 import com.eidu.integration.RunLearningUnitResult
 import com.eidu.integration.sample.app.util.ForegroundStopwatch
@@ -80,31 +81,39 @@ class LearningUnitRunViewModel @Inject constructor(
             RunLearningUnitResult.ofSuccess(
                 score,
                 elapsedForegroundTimeMs,
-                additionalData
+                additionalData,
+                listOf(
+                    ResultItem("item1", "1 + 2", "4", "3", 0.5f, 500L, 100L),
+                    ResultItem("item2", "3 + 4", "7", "7", 1f, 1000L, 200L),
+                )
             )
 
         RunLearningUnitResult.ResultType.Abort ->
-            RunLearningUnitResult.ofAbort(score, elapsedForegroundTimeMs, additionalData)
+            RunLearningUnitResult.ofAbort(score, elapsedForegroundTimeMs, additionalData, emptyList())
 
         RunLearningUnitResult.ResultType.Error ->
             RunLearningUnitResult.ofError(
+                score,
                 elapsedForegroundTimeMs,
                 errorDetails,
-                additionalData
+                additionalData,
+                null
             )
 
         RunLearningUnitResult.ResultType.TimeUp ->
             RunLearningUnitResult.ofTimeUp(
                 score,
                 elapsedForegroundTimeMs,
-                additionalData
+                additionalData,
+                emptyList()
             )
 
         RunLearningUnitResult.ResultType.TimeoutInactivity ->
             RunLearningUnitResult.ofTimeoutInactivity(
                 score,
                 elapsedForegroundTimeMs,
-                additionalData
+                additionalData,
+                emptyList()
             )
     }
 }

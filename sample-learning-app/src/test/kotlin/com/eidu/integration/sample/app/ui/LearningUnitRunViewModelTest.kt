@@ -2,6 +2,7 @@ package com.eidu.integration.sample.app.ui
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.eidu.integration.ResultItem
 import com.eidu.integration.RunLearningUnitResult
 import io.mockk.every
 import io.mockk.mockk
@@ -20,35 +21,43 @@ class LearningUnitRunViewModelTest {
     fun `creates Success result`() {
         viewModel.resultType = RunLearningUnitResult.ResultType.Success
         assertThat(viewModel.getResult())
-            .isEqualTo(RunLearningUnitResult.ofSuccess(SCORE, ELAPSED_FOREGROUND_TIME_MS, ADDITIONAL_DATA))
+            .isEqualTo(
+                RunLearningUnitResult.ofSuccess(
+                    SCORE, ELAPSED_FOREGROUND_TIME_MS, ADDITIONAL_DATA,
+                    listOf(
+                        ResultItem("item1", "1 + 2", "4", "3", 0.5f, 500L, 100L),
+                        ResultItem("item2", "3 + 4", "7", "7", 1f, 1000L, 200L),
+                    )
+                )
+            )
     }
 
     @Test
     fun `creates Abort result`() {
         viewModel.resultType = RunLearningUnitResult.ResultType.Abort
         assertThat(viewModel.getResult())
-            .isEqualTo(RunLearningUnitResult.ofAbort(SCORE, ELAPSED_FOREGROUND_TIME_MS, ADDITIONAL_DATA))
+            .isEqualTo(RunLearningUnitResult.ofAbort(SCORE, ELAPSED_FOREGROUND_TIME_MS, ADDITIONAL_DATA, emptyList()))
     }
 
     @Test
     fun `creates TimeUp result`() {
         viewModel.resultType = RunLearningUnitResult.ResultType.TimeUp
         assertThat(viewModel.getResult())
-            .isEqualTo(RunLearningUnitResult.ofTimeUp(SCORE, ELAPSED_FOREGROUND_TIME_MS, ADDITIONAL_DATA))
+            .isEqualTo(RunLearningUnitResult.ofTimeUp(SCORE, ELAPSED_FOREGROUND_TIME_MS, ADDITIONAL_DATA, emptyList()))
     }
 
     @Test
     fun `creates TimeoutInactivity result`() {
         viewModel.resultType = RunLearningUnitResult.ResultType.TimeoutInactivity
         assertThat(viewModel.getResult())
-            .isEqualTo(RunLearningUnitResult.ofTimeoutInactivity(SCORE, ELAPSED_FOREGROUND_TIME_MS, ADDITIONAL_DATA))
+            .isEqualTo(RunLearningUnitResult.ofTimeoutInactivity(SCORE, ELAPSED_FOREGROUND_TIME_MS, ADDITIONAL_DATA, emptyList()))
     }
 
     @Test
     fun `creates Error result`() {
         viewModel.resultType = RunLearningUnitResult.ResultType.Error
         assertThat(viewModel.getResult())
-            .isEqualTo(RunLearningUnitResult.ofError(ELAPSED_FOREGROUND_TIME_MS, ERROR_DETAILS, ADDITIONAL_DATA))
+            .isEqualTo(RunLearningUnitResult.ofError(SCORE, ELAPSED_FOREGROUND_TIME_MS, ERROR_DETAILS, ADDITIONAL_DATA, null))
     }
 
     companion object {

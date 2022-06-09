@@ -1,81 +1,81 @@
 {
-  "learningUnits": [
+  "units": [
     {
-      "unitId": "Sample_Learning_Unit_01",
+      "id": "Sample_Learning_Unit_01",
       "icon": "sample.png",
-      "additionalAssets": [
+      "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "unitId": "Sample_Learning_Unit_02",
+      "id": "Sample_Learning_Unit_02",
       "icon": "sample.png",
-      "additionalAssets": [
+      "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "unitId": "Sample_Learning_Unit_03",
+      "id": "Sample_Learning_Unit_03",
       "icon": "sample.png",
-      "additionalAssets": [
+      "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "unitId": "Sample_Learning_Unit_04",
+      "id": "Sample_Learning_Unit_04",
       "icon": "sample.png",
-      "additionalAssets": [
+      "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "unitId": "Sample_Learning_Unit_05",
+      "id": "Sample_Learning_Unit_05",
       "icon": "sample.png",
-      "additionalAssets": [
+      "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "unitId": "Sample_Learning_Unit_06",
+      "id": "Sample_Learning_Unit_06",
       "icon": "sample.png",
-      "additionalAssets": [
+      "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "unitId": "Sample_Learning_Unit_07",
+      "id": "Sample_Learning_Unit_07",
       "icon": "sample.png",
-      "additionalAssets": [
+      "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "unitId": "Sample_Learning_Unit_08",
+      "id": "Sample_Learning_Unit_08",
       "icon": "sample.png",
-      "additionalAssets": [
+      "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "unitId": "Sample_Learning_Unit_09",
+      "id": "Sample_Learning_Unit_09",
       "icon": "sample.png",
-      "additionalAssets": [
+      "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "unitId": "Sample_Learning_Unit_10",
+      "id": "Sample_Learning_Unit_10",
       "icon": "sample.png",
-      "additionalAssets": [
+      "assets": [
         "subfolder/",
         "text.txt"
       ]
