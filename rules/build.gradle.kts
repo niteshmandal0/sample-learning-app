@@ -6,8 +6,8 @@ plugins {
 dependencies {
     compileOnly(kotlin("stdlib-jdk8", Versions.kotlin))
     compileOnly(kotlin("reflect", Versions.kotlin))
-    compileOnly("com.android.tools.lint:lint-api:30.0.3")
-    compileOnly("com.android.tools.lint:lint-checks:30.0.3")
+    compileOnly("com.android.tools.lint:lint-api:30.2.1")
+    compileOnly("com.android.tools.lint:lint-checks:30.2.1")
 }
 
 java {

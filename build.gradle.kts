@@ -2,7 +2,7 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import packaging.generateLearningPackage
 
 plugins {
-    id("com.github.ben-manes.versions") version "0.39.0"
+    id("com.github.ben-manes.versions") version "0.42.0"
 }
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
@@ -14,7 +14,7 @@ buildscript {
 
     dependencies {
         classpath("com.android.tools.build:gradle:${Versions.gradle}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}")
     }
 }

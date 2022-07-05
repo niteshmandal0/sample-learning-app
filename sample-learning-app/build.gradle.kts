@@ -63,7 +63,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.compose
+        kotlinCompilerExtensionVersion = "1.2.0"
     }
 
     packagingOptions {
@@ -74,18 +74,18 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.0")
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.lifecycle:lifecycle-process:2.4.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.appcompat:appcompat:1.4.2")
+    implementation("com.google.android.material:material:1.6.1")
+    implementation("androidx.lifecycle:lifecycle-process:2.5.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
 
     // Compose
     implementation("androidx.compose.ui:ui:${Versions.compose}")
     implementation("androidx.compose.material:material:${Versions.compose}")
     implementation("androidx.compose.runtime:runtime:${Versions.compose}")
     implementation("androidx.compose.runtime:runtime-livedata:${Versions.compose}")
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.activity:activity-compose:1.5.0")
 
     // Hilt/Dagger DI
     implementation("com.google.dagger:hilt-android:${Versions.hilt}")
@@ -97,7 +97,7 @@ dependencies {
     // Test
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.willowtreeapps.assertk:assertk:0.25")
-    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("io.mockk:mockk:1.12.4")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.compose}")
     debugImplementation("androidx.compose.ui:ui-tooling:${Versions.compose}")

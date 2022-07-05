@@ -7,9 +7,9 @@ object Apps {
 }
 
 object Versions {
-    const val gradle = "7.0.2"
-    const val kotlin = "1.5.30"
-    const val compose = "1.1.0-alpha03"
-    const val ktlintGradle = "10.1.0"
-    const val hilt = "2.38.1"
+    const val gradle = "7.2.1"
+    const val kotlin = "1.7.0"
+    const val compose = "1.1.1"
+    const val ktlintGradle = "10.3.0"
+    const val hilt = "2.42"
 }
