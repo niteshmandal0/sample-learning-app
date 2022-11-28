@@ -12,6 +12,7 @@ plugins {
 val version = getAppVersion()
 
 android {
+    namespace = "com.eidu.integration.sample.app"
     compileSdk = Apps.compileSdk
     buildToolsVersion = Apps.buildToolsVersion
 
