@@ -7,6 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("dagger.hilt.android.plugin")
     id("org.jlleitschuh.gradle.ktlint") version Versions.ktlintGradle
+    id("com.github.jk1.dependency-license-report") version "2.8"
 }
 
 val version = getAppVersion()
@@ -72,6 +73,21 @@ android {
         resources.excludes += "META-INF/AL2.0"
         resources.excludes += "META-INF/LGPL2.1"
     }
+}
+
+licenseReport {
+    configurations = arrayOf("releaseRuntimeClasspath")
+    allowedLicensesFile = File("$projectDir/allowed-licenses.json")
+}
+
+tasks.named("checkLicense") {
+    // The checkLicense task does not declare this input itself, so we do it here. This ensures
+    // that a modification of the file causes the checkLicense task to be re-evaluated.
+    inputs.file("$projectDir/allowed-licenses.json")
+}
+
+tasks.named("check") {
+    dependsOn("checkLicense")
 }
 
 dependencies {
