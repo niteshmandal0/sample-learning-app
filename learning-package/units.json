@@ -1,79 +1,39 @@
 {
   "units": [
     {
-      "id": "Sample_Learning_Unit_01",
-      "icon": "sample.png",
+      "id": "en0000",
+      "icon": "sampleA.png",
       "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "id": "Sample_Learning_Unit_02",
-      "icon": "sample.png",
+      "id": "en0001",
+      "icon": "sampleB.png",
       "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "id": "Sample_Learning_Unit_03",
-      "icon": "sample.png",
+      "id": "en0002",
+      "icon": "sampleC.png",
       "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "id": "Sample_Learning_Unit_04",
-      "icon": "sample.png",
+      "id": "ambulance",
+      "icon": "openBook.png",
       "assets": [
         "subfolder/",
         "text.txt"
       ]
     },
     {
-      "id": "Sample_Learning_Unit_05",
-      "icon": "sample.png",
-      "assets": [
-        "subfolder/",
-        "text.txt"
-      ]
-    },
-    {
-      "id": "Sample_Learning_Unit_06",
-      "icon": "sample.png",
-      "assets": [
-        "subfolder/",
-        "text.txt"
-      ]
-    },
-    {
-      "id": "Sample_Learning_Unit_07",
-      "icon": "sample.png",
-      "assets": [
-        "subfolder/",
-        "text.txt"
-      ]
-    },
-    {
-      "id": "Sample_Learning_Unit_08",
-      "icon": "sample.png",
-      "assets": [
-        "subfolder/",
-        "text.txt"
-      ]
-    },
-    {
-      "id": "Sample_Learning_Unit_09",
-      "icon": "sample.png",
-      "assets": [
-        "subfolder/",
-        "text.txt"
-      ]
-    },
-    {
-      "id": "Sample_Learning_Unit_10",
+      "id": "sample",
       "icon": "sample.png",
       "assets": [
         "subfolder/",

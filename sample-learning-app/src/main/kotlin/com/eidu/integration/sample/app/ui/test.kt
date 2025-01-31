@@ -1,6 +1,5 @@
 package com.eidu.integration.sample.app.ui
 
-import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -60,11 +59,13 @@ import java.text.DecimalFormat
  */
 @OptIn(ExperimentalMaterialApi::class)
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivitys : ComponentActivity() {
 
     private val viewModel: LearningUnitRunViewModel by viewModels()
 
     private val mediaPlayer = MediaPlayer()
+
+    private lateinit var request: RunLearningUnitRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,22 +75,38 @@ class MainActivity : ComponentActivity() {
           can use its information to control the subsequent behaviour of our app.
          */
 
-//        Sample Data
-//        request = RunLearningUnitRequest.of(
-//            "Sample_Learning_Unit_01",
-//            "Test Run",
-//            "Test Learner",
-//            "Test School",
-//            "test",
-//            300_000L,
-//            30_000L,
-//            Uri.parse("test")
-//        )
 
+        val resultAns: MutableList<String> = mutableListOf()
 
+        // Hard-coded values for RunLearningUnitRequest
+        request = RunLearningUnitRequest.of(
+            "Sample_Learning_Unit_01",       // learningUnitId
+            "Test Run",        // learningUnitRunId
+            "Test Learner",    // learnerId
+            "Test School",     // schoolId
+            "test",        // stage
+            300_000L,                // remainingForegroundTimeInMs
+            30_000L,                 // inactivityTimeoutInMs
+            Uri.parse("test") // additionalData
+        )
 
         try {
-            val request = RunLearningUnitRequest.fromIntent(intent)
+//            val request = RunLearningUnitRequest.fromIntent(intent)
+            if (request != null) {
+                resultAns.add(request.version.toString())
+                resultAns.add(request.learningUnitId)
+                resultAns.add(request.learningUnitRunId)
+                resultAns.add(request.learnerId)
+                resultAns.add(request.schoolId)
+                resultAns.add(request.stage)
+                resultAns.add(request.remainingForegroundTimeInMs.toString())
+                resultAns.add(request.inactivityTimeoutInMs.toString())
+//                resultAns.add(request.
+
+            }
+
+            System.out.println("resultAnsss" + resultAns);
+
             if (request == null) {
                 Log.d(TAG, "onCreate: launch intent is not a request to launch a learning unit: $intent")
                 finish()
@@ -103,29 +120,23 @@ class MainActivity : ComponentActivity() {
             return
         }
 
-        val lessonId = viewModel.request.learningUnitId;
-        handleLearningUnit(lessonId);
-        println("lessonId " + lessonId)
-
-
-
         /*
           Create a UI that allows viewing the request, and editing and returning the result to the
           EIDU app.
          */
-//        setContent {
-//            EIDUIntegrationSampleAppTheme {
-//                EiduScaffold(title = { Text(stringResource(R.string.runOf, viewModel.request.learningUnitId)) }) {
-//                    val scrollState = ScrollState(0)
-//                    Column(Modifier.verticalScroll(scrollState, true)) {
-//                        RequestData()
-//                        Assets()
-//                        ResultData()
-//                        SendResultButton()
-//                    }
-//                }
-//            }
-//        }
+        setContent {
+            EIDUIntegrationSampleAppTheme {
+                EiduScaffold(title = { Text(stringResource(R.string.runOf, viewModel.request.learningUnitId)) }) {
+                    val scrollState = ScrollState(0)
+                    Column(Modifier.verticalScroll(scrollState, true)) {
+                        RequestData()
+                        Assets()
+                        ResultData()
+                        SendResultButton()
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -390,15 +401,25 @@ class MainActivity : ComponentActivity() {
      * Returns a [RunLearningUnitResult] to the EIDU app and finishes the activity.
      */
     private fun sendResult(result: RunLearningUnitResult) {
-        setResult(RESULT_OK, result.toIntent())
-        finish()
-    }
 
-    private fun handleLearningUnit(lessonId: String) {
-        val webIntent = Intent(this, WebViewActivity::class.java).apply {
-            putExtra("lesson_id", lessonId)
+        val resultReturn: MutableList<String> = mutableListOf()
+
+        resultReturn.add(result.version.toString())
+        resultReturn.add(result.resultType.toString())
+        resultReturn.add(result.score.toString())
+        resultReturn.add(result.foregroundDurationInMs.toString())
+        resultReturn.add(result.additionalData.toString())
+        resultReturn.add(result.errorDetails.toString())
+        resultReturn.add(result.items.toString())
+
+        for(result in resultReturn){
+            Log.d(TAG, "sendResult: $result")
         }
-        startActivity(webIntent)
+
+
+
+//        Log.d(TAG, "sendResult: $resultReturn")
+        setResult(RESULT_OK, result.toIntent())
         finish()
     }
 
